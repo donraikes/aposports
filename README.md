@@ -30,6 +30,6 @@ The jetapp folder contains the actual Oracle JET application.
 
 ## database:
 
-The database folder conntains the apex QuixckSQL data model text documents as
+The database folder contains the apex QuixckSQL data model text documents as
 well as the schema creation scripts.
 There are also files for the insertion of initial test data.
