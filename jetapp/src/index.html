@@ -104,16 +104,34 @@
                 <oj-menu-button id="userMenu" display="[[smScreen() ? 'icons' : 'all']]" chroming="borderless">
                   <span><oj-bind-text value="[[userLogin]]"></oj-bind-text></span>
                   <span slot="endIcon" :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon oj-button-menu-dropdown-icon': !smScreen()}]]"></span>
-                  <oj-menu id="menu1" slot="menu">
-                    <oj-option id="pref" value="pref">Preferences</oj-option>
-                    <oj-option id="help" value="help">Help</oj-option>
-                    <oj-option id="about" value="about">About</oj-option>
-                    <oj-option id="out" value="out">Sign Out</oj-option>
+                  <oj-menu id="menu1" slot="menu" on-oj-action="[[menuItemAction]]">
+                    <oj-bind-for-each data="[[menuItems]]">
+                      <template>
+                        <oj-option :id="[[$current.data.id]]" value="[[$current.data.label]]">
+                          <span>
+                            <oj-bind-text value="[[$current.data.label]]"></oj-bind-text>
+                          </span>
+                        </oj-option>
+                      </template>
+                    </oj-bind-for-each>
                   </oj-menu>
                 </oj-menu-button>
               </oj-toolbar>
             </div>
           </div>
+          <oj-dialog id="loginDialog" dialog-title="Log In">
+            <div slot="body">
+              <oj-form-layout>
+                <oj-input-text label-hint="Full name" value="{{authUser}}"></oj-input-text>
+              </oj-form-layout>
+            </div>
+            <div slot="footer">
+              <oj-button id="loginButton" on-oj-action="[[authAction]]">Login
+              </oj-button>
+              <oj-button id="cancelButton" on-oj-action="[[cancelAction]]">Cancel
+              </oj-button>
+            </div>
+          </oj-dialog>
           <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
             <oj-navigation-list id="navTabBar" class="oj-sm-only-hide oj-md-condense oj-md-justify-content-flex-end"
                                 data="[[navDataProvider]]"
