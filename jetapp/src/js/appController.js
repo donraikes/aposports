@@ -52,30 +52,30 @@ define([
     this.config = JSON.parse(appconfig);
 
     this.menuItems = ko.pureComputed(() => {
-      if(this.userRole() === 'user'){
-      return [
-        { id: "pref", value: "pref", label: "Preferences" },
-        { id: "help", value: "help", label: "Help" },
-        { id: "about", value: "about", label: "About" },
-        {
-          id: "auth",
-          value: this.authActionName(),
-          label: this.authActionName(),
-        },
-      ];
-    } else {
-      return [
-        { id: "pref", value: "pref", label: "Preferences" },
-        { id: "help", value: "help", label: "Help" },
-        { id: "about", value: "about", label: "About" },
-        {
-          id: "auth",
-          value: this.authActionName(),
-          label: this.authActionName(),
-        },
-        { id: "admin", value: "admin", label: "Administration" }
-      ];
-    }
+      if (this.userRole() === "user") {
+        return [
+          { id: "pref", value: "pref", label: "Preferences" },
+          { id: "help", value: "help", label: "Help" },
+          { id: "about", value: "about", label: "About" },
+          {
+            id: "auth",
+            value: this.authActionName(),
+            label: this.authActionName(),
+          },
+        ];
+      } else {
+        return [
+          { id: "pref", value: "pref", label: "Preferences" },
+          { id: "help", value: "help", label: "Help" },
+          { id: "about", value: "about", label: "About" },
+          {
+            id: "auth",
+            value: this.authActionName(),
+            label: this.authActionName(),
+          },
+          { id: "admin", value: "admin", label: "Administration" },
+        ];
+      }
     });
 
     // Handle announcements sent when pages change, for Accessibility.
@@ -89,7 +89,6 @@ define([
     document
       .getElementById("globalBody")
       .addEventListener("announce", announcementHandler, false);
-
 
     // Media queries for repsonsive layouts
     const smQuery = ResponsiveUtils.getFrameworkQuery(
@@ -108,8 +107,8 @@ define([
         detail: { label: "Dashboard", iconClass: "oj-ux-ico-bar-chart" },
       },
       {
-        path: "incidents",
-        detail: { label: "Incidents", iconClass: "oj-ux-ico-fire" },
+        path: "administration",
+        detail: { label: "Administration", iconClass: "oj-ux-ico-fire" },
       },
       {
         path: "customers",
@@ -135,6 +134,23 @@ define([
     // route.
     this.navDataProvider = new ArrayDataProvider(navData.slice(1), {
       keyAttributes: "path",
+    });
+
+    router.currentState.subscribe((args) => {
+      let state = args.state;
+      if (state) {
+        let name = state.path;
+        var complete = args.complete;
+        // Load the module and return Promise to CoreRouter
+        if (name === "administration" && this.userRole() !== "admin") {
+          complete(Promise.reject(new Error('User does not have Administrator rights.')).then(function() {
+            // only handling errors, no success defaults.
+          }, function(error) {
+            console.log(error);
+            router.go({path:'dashboard'});
+          }));
+        }
+      }
     });
 
     // Drawer
@@ -177,7 +193,7 @@ define([
                   "UserName: " + data.full_name + " || Role: " + data.role
                 );
                 this.userLogin(data.full_name);
-                data.role ? this.userRole(data.role) : this.userRole('user');
+                data.role ? this.userRole(data.role) : this.userRole("user");
                 this.authActionName("Log Out");
                 document.getElementById("loginDialog").close();
               } else {
@@ -189,7 +205,7 @@ define([
         this.userLogin("Guest");
         this.userRole("user");
         this.authActionName("Log In");
-        router.go({path:'dashboard'});
+        router.go({ path: "dashboard" });
       }
     };
 
@@ -203,8 +219,8 @@ define([
         document.getElementById("loginDialog").open();
       } else if (action === "Log Out") {
         this.authAction();
-      } else if (action === 'Administration'){
-        router.go({ path: 'incidents'});
+      } else if (action === "Administration") {
+        router.go({ path: "administration" });
       } else {
         console.log("Menu clicked: " + action);
       }
