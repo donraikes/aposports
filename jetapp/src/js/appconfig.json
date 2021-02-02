@@ -1,4 +1,4 @@
 {
-  "baseURL": "https://apex.oracle.com/pls/apex/oraclejet/store/customers",
+  "baseURL": "https://apex.oracle.com/pls/apex/accjet/store/customers",
   "defaultRole": "user" 
 }
