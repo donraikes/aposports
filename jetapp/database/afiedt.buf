@@ -1,0 +1,8 @@
+select c.category as category,
+cursor(select p.name as name,
+p.short_desc as short_desc
+from products p
+where p.product_category_id = c.product_category_id) as products
+from product_categories c
+where c.product_category_id = 1
+/
