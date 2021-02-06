@@ -4,8 +4,48 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
 <div class="oj-hybrid-padding">
-  <h1>Dashboard Content Area</h1>
-  <div>
-      To change the content of this section, you will make edits to the dashboard.html file located in the /js/views folder.
+  <h2>Product Catalog</h2>
+  <div class="oj-flex oj-md-flex-wrap-nowrap">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-sm-margin-4x-horizontal
+	oj-panel">
+  <div id="catlist"
+  <h3>Product Categories List</h3>
+  <p>Click or press &lt;enter&gt; on a category name to display the list of
+  products in the category.</p>
   </div>
+  <oj-list-view id="listview" aria-labeledby="catlist" 
+  data="[[categoriesArray]]" selected="{{selectedCategories}}"
+  selection-mode="single"
+  selection-required="[[selectedCategorySelectionRequired]]"
+  on-selected-changed="[[handleCategorySelectedChanged]]"
+  first-selected-item="{{firstSelectedCategory}}">
+  <template slot="itemTemplate" data-oj-as="item">
+  <li>
+  <oj-list-item-layout>
+  <span class="oj-typography-body-md oj-text-color-primary"><oj-bind-text
+  value="[[item.data.category]]"></oj-bind-text></span>
+  <oj-avatar slot="trailing" size="xs" src="[[item.data.image]]"></oj-avatar> 
+  <span slot="secondary" class="oj-typography-body-sm
+  oj-text-color-secondary"><oj-bind-text
+  value="[[item.data.short_desc]]"></oj-bind-text></span>
+  </oj-list-item-layout>
+  </li>
+  </template>
+  <template slot="noData">
+  <div class="oj-flex oj-sm-align-items-center demo-nodata-content">
+  <div class="oj-flex oj-sm-align-items-center oj-sm-flex-direction-column
+  demo-nodata-inner">
+  <b aria-live="assertive">No product categories to display.</b>
+  </div>
+  </div>
+  </template>
+  </oj-list-view>
+	</div>
+
+	<!-- right-hand panel -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-sm-margin-4x-horizontal
+	oj-panel">
+	</div>
+	</div>
+
 </div>

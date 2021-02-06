@@ -8,9 +8,38 @@
 /*
  * Your dashboard ViewModel code goes here
  */
-define(['accUtils'],
- function(accUtils) {
+define(['accUtils'
+	'knockout',
+	'text!appconfig.json',
+	'ojs/ojarraydataprovider',
+	'ojs/ojknockout-keyset',
+	'ojs/ojswitch',
+	'ojs/ojlabel',
+	'ojs/ojavatar',
+	'ojs/ojlistview',
+	'ojs/ojlistitemlayout',
+	'ojs/ojknockout'
+],
+ function(accUtils, ko, appconfig,ArrayDataProvider,KeySet) {
     function DashboardViewModel() {
+		this.config = JSON.parse(appconfig);
+		this.categoriesURL = config.baseurl+"/categories";
+		this.productsURL = config.baseurl+"/productsByCategory/";
+
+		// knockout observables for the categories list view
+		this.selectedCategories = new ojknockout_keyset_1.ObservableKeySet(); 
+		this.selectedCategorySelectionRequired = ko.observable(false);
+		this.firstCategorySelectedItem = ko.observable();
+		this.selectedCategoryIds = ko.observable();
+		this.categoriesArray = ko.observable();
+
+		// Knockout observables for the products list view
+		this.selectedproducts = new ojknockout_keyset_1.ObservableKeySet(); 
+		this.selectedProductSelectionRequired = ko.observable(false);
+		this.firstProductSelectedItem = ko.observable();
+		this.selectedProductIds = ko.observable();
+		this.productsArray = ko.observable();
+
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
 
