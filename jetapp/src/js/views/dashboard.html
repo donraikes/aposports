@@ -8,17 +8,13 @@
   <div class="oj-flex oj-md-flex-wrap-nowrap">
     <div class="oj-flex-item oj-sm-12 oj-md-6 oj-sm-margin-4x-horizontal
 	oj-panel">
-  <div id="catlist"
-  <h3>Product Categories List</h3>
-  <p>Click or press &lt;enter&gt; on a category name to display the list of
+  <h3 id="catlist">Product Categories List</h3>
+  <p id="catdesc">Click or press &lt;enter&gt; on a category name to display the list of
   products in the category.</p>
-  </div>
-  <oj-list-view id="listview" aria-labeledby="catlist" 
-  data="[[categoriesArray]]" selected="{{selectedCategories}}"
-  selection-mode="single"
-  selection-required="[[selectedCategorySelectionRequired]]"
-  on-selected-changed="[[handleCategorySelectedChanged]]"
-  first-selected-item="{{firstSelectedCategory}}">
+  <oj-list-view id="listview" aria-labeledby="catlist"
+  role="application"
+  aria-describedby="catdesc"
+  data="[[catArray]]">
   <template slot="itemTemplate" data-oj-as="item">
   <li>
   <oj-list-item-layout>

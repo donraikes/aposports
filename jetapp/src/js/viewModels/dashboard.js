@@ -8,9 +8,8 @@
 /*
  * Your dashboard ViewModel code goes here
  */
-define(['accUtils'
+define(['accUtils',
 	'knockout',
-	'text!appconfig.json',
 	'ojs/ojarraydataprovider',
 	'ojs/ojknockout-keyset',
 	'ojs/ojswitch',
@@ -20,25 +19,32 @@ define(['accUtils'
 	'ojs/ojlistitemlayout',
 	'ojs/ojknockout'
 ],
- function(accUtils, ko, appconfig,ArrayDataProvider,KeySet) {
+ function(accUtils, ko, ArrayDataProvider,KeySet) {
     function DashboardViewModel() {
-		this.config = JSON.parse(appconfig);
-		this.categoriesURL = config.baseurl+"/categories";
-		this.productsURL = config.baseurl+"/productsByCategory/";
+		const BASEURL = "https://apex.oracle.com/pls/apex/accjet/store/";
+		let self = this;
+		let catURL = BASEURL+"categories";
+		let prodURL = BASEURL+"products/";
+
 
 		// knockout observables for the categories list view
-		this.selectedCategories = new ojknockout_keyset_1.ObservableKeySet(); 
-		this.selectedCategorySelectionRequired = ko.observable(false);
-		this.firstCategorySelectedItem = ko.observable();
-		this.selectedCategoryIds = ko.observable();
-		this.categoriesArray = ko.observable();
+		this.catArray = ko.observable();
 
 		// Knockout observables for the products list view
-		this.selectedproducts = new ojknockout_keyset_1.ObservableKeySet(); 
-		this.selectedProductSelectionRequired = ko.observable(false);
-		this.firstProductSelectedItem = ko.observable();
-		this.selectedProductIds = ko.observable();
-		this.productsArray = ko.observable();
+		this.prodArray = ko.observable();
+
+console.log(catURL);
+ // fetch the categories rest api into catArray
+ fetch(catURL)
+     .then(res => res.json()) // expecting a json response
+     .then(json => {
+         console.log(json);
+          self.catArray(new ArrayDataProvider(json.items, { keyAttributes: 'category_id' }));
+	     })
+	     .catch(err => {
+			 console.log("an error occurred during the fetch:");
+	         console.log(err);
+	     });
 
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
